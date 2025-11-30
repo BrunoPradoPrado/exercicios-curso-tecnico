@@ -1,0 +1,39 @@
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@WebServlet("/ServletAtualizaAviao")
+public class ServletAtualizaAviao extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
+    public ServletAtualizaAviao() {
+        super();
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Recupera o modelo e o piloto que serão atualizados
+        String modelo = request.getParameter("txModelo");
+        String piloto = request.getParameter("txPiloto");
+
+        // Cria o objeto Aviao para atualizar
+        Aviao aviao = new Aviao(modelo, piloto);
+        AviaoDAO dao = new AviaoDAO();
+
+        try {
+            // Atualiza o piloto no banco de dados
+            dao.atualiza(aviao);
+            
+            // Mensagem de sucesso
+            request.setAttribute("mensagem", "Piloto atualizado com sucesso!");
+        } catch (ClassNotFoundException e) {
+            // Mensagem de erro
+            request.setAttribute("mensagem", "Erro ao atualizar o piloto.");
+        }
+
+        // Redireciona para o formulário de atualização com a mensagem
+        request.getRequestDispatcher("/atualizaAviao.jsp").forward(request, response);
+    }
+}

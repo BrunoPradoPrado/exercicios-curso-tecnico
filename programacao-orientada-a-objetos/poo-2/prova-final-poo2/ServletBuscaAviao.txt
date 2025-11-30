@@ -1,0 +1,65 @@
+
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * Servlet implementation class ServletBuscaAviao
+ */
+@WebServlet("/ServletBuscaAviao")
+public class ServletBuscaAviao extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletBuscaAviao() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+		String modelo = request.getParameter("txModelo");
+		String piloto = request.getParameter("txPiloto");
+		
+		Aviao c = new Aviao(modelo,piloto);
+		AviaoDAO dao = new AviaoDAO();
+		ArrayList<Aviao> listaAviao = new ArrayList<Aviao>();
+		
+		try {
+			listaAviao = dao.busca(c);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		response.setContentType("text/html");
+		PrintWriter pw = response.getWriter();
+		for (int i = 0; i < listaAviao.size(); i++) {
+			pw.println("<h1>" + i + "</h1>");
+			pw.println("<h1>" + listaAviao.get(i).getmodelo() + "</h1>");
+			pw.println("<h1>" + listaAviao.get(i).getpiloto() + "</h1>");
+		}
+	}
+
+}

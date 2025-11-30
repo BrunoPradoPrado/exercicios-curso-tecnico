@@ -1,0 +1,84 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) {
+		ArrayList<ContaCorrente> listaContas = new ArrayList();
+		Scanner teclado = new Scanner(System.in);
+
+		ContaCorrente c1 = new ContaCorrente(1212, "1212");
+		ContaCorrente c2 = new ContaCorrente(2828, "1234");
+		listaContas.add(c1);
+		listaContas.add(c2);
+		c1.depositar(1000);
+		c2.depositar(1000);
+		int numero;
+		String senha;
+		int flag = -1;
+		int opc;
+		do {
+			System.out.println("Digite o número da conta: ");
+			numero = teclado.nextInt();
+			System.out.println("Digite a senha da conta: ");
+			senha = teclado.next();
+			for (int i = 0; i < listaContas.size(); i++) {
+				if (numero == listaContas.get(i).getNumero()) {
+					if (senha.equals(listaContas.get(i).getSenha())) {
+						System.out.println("Conta encontrada! ");
+						flag = i;
+					}
+				}
+			}
+			if (flag == -1) {
+				System.out.println("Conta não encontrada, tente novamente!");
+			}
+		} while (flag < 0);
+		System.out.println("Login efetivado!");
+		do {
+			System.out.println("-----------------------");
+			System.out.println("1 - Alterar senha.");
+			System.out.println("2 - Verificar saldo.");
+			System.out.println("3 - Sacar.");
+			System.out.println("4 - Depositar.");
+			System.out.println("5 - Transferir.");
+			System.out.println("6 - Sair.");
+			opc = teclado.nextInt();
+			if (opc == 1) {
+				System.out.println("Insira a nova senha: ");
+				String novaSenha = teclado.next();
+				listaContas.get(flag).alteraSenha(novaSenha);
+			} else if (opc == 2) {
+				listaContas.get(flag).extrato();
+			} else if (opc == 3) {
+				System.out.println("Insira o valor que deseja sacar: ");
+				float saque = teclado.nextFloat();
+				listaContas.get(flag).sacar(saque);
+			} else if (opc == 4) {
+				System.out.println("Insira o valor que deseja depositar: ");
+				float deposito = teclado.nextFloat();
+				listaContas.get(flag).depositar(deposito);
+			} else if (opc == 5) {
+				int flag2 = 0;
+				System.out.println("Digite o número da conta destino: ");
+				int nDestino = teclado.nextInt();
+				for (int i = 0; i < listaContas.size(); i++) {
+					if (nDestino == listaContas.get(i).getNumero()) {
+						System.out.println("Conta encontrada!");
+						System.out.println("Insira o valor a ser transferido: ");
+						float valorTransferido = teclado.nextFloat();
+						flag2 = i;
+						listaContas.get(i).transferir(listaContas.get(i), valorTransferido);
+					}
+				}
+				if (flag2 == 0) {
+					System.out.println("Conta não encontrada!");
+				}
+
+			} else if (opc == 6) {
+				listaContas.clear();
+			}
+		} while (opc != 6);
+		teclado.close();
+	}
+}

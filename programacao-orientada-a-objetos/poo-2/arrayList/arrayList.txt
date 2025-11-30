@@ -1,0 +1,52 @@
+import java.util.Scanner;
+import java.util.ArrayList;
+public class Main {
+
+	public static void main(String[] args) {
+		Scanner teclado = new Scanner(System.in);
+		ArrayList<Aluno> listaAlunos = new ArrayList();
+		
+		for(int i=0;i<3;i++) {
+			System.out.println("Informe o nome do aluno: ");
+			String nome = teclado.next();
+			System.out.println("Informe a matricula do aluno: ");
+			int matricula = teclado.nextInt();
+			Aluno aluno = new Aluno(nome,matricula);
+			listaAlunos.add(aluno);
+		}
+		for (int i=0;i<listaAlunos.size();i++) {
+			System.out.println("Removendo o primeiro aluno com matrícula par.");
+			if(listaAlunos.get(i).getMatricula()%2==0) {
+				listaAlunos.remove(i);
+				break;
+			}
+		}
+		System.out.println("Apagando toda a lista.");
+		listaAlunos.clear();
+	}
+
+}
+-------------------------------------------
+
+public class Aluno {
+	private String nome;
+	private int matricula;
+	public Aluno(String nome, int matricula) {
+		super();
+		this.nome = nome;
+		this.matricula = matricula;
+	}
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public int getMatricula() {
+		return matricula;
+	}
+	public void setMatricula(int matricula) {
+		this.matricula = matricula;
+	}
+	
+}

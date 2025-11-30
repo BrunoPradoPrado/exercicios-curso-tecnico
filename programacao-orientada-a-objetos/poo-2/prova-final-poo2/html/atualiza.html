@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Atualiza Piloto do Avião</title>
+</head>
+<body>
+<h2>Atualizar Piloto do Avião</h2>
+
+<!-- Formulário para buscar aviões pelo modelo -->
+<form name="fBusca" method="post" action="ServletBuscaAviao">
+    <p>Modelo do Avião: <input type="text" name="txModelo" required></p>
+    <p><input type="submit" value="Buscar Aviões"></p>
+</form>
+
+<% 
+    // Verifica se foi retornada uma lista de aviões após a busca
+    ArrayList<Aviao> listaAvioes = (ArrayList<Aviao>) request.getAttribute("listaAvioes");
+    if (listaAvioes != null && !listaAvioes.isEmpty()) {
+%>
+    <h3>Aviões Encontrados</h3>
+    <form name="fAtualiza" method="post" action="ServletAtualizaAviao">
+        <table border="1">
+            <tr>
+                <th>Modelo</th>
+                <th>Piloto Atual</th>
+            </tr>
+            <%
+                for (Aviao aviao : listaAvioes) {
+            %>
+            <tr>
+                <td><input type="text" name="txModelo" value="<%= aviao.getmodelo() %>" readonly></td>
+                <td><input type="text" name="txPilotoAtual" value="<%= aviao.getpiloto() %>" readonly></td>
+            </tr>
+            <%
+                }
+            %>
+        </table>
+        <p><b>Novo Piloto:</b> <input type="text" name="txPiloto" required></p>
+        <p><input type="submit" value="Atualizar Piloto"></p>
+    </form>
+<% 
+    } else {
+%>
+    <p>Nenhum avião encontrado com o modelo informado.</p>
+<% 
+    }
+%>
+
+<% 
+    // Exibir a mensagem de sucesso ou erro
+    String mensagem = (String) request.getAttribute("mensagem");
+    if (mensagem != null) {
+%>
+        <p><%= mensagem %></p>
+<% 
+    }
+%>
+
+</body>
+</html>

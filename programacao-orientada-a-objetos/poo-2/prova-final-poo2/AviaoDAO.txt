@@ -1,0 +1,90 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+public class AviaoDAO {
+	String url = "jdbc:postgresql://localhost:5432/aeroporto";
+	private Connection connection;
+	private String user = "postgres";
+	private String senha = "aluno";
+
+	public AviaoDAO() {
+	}
+
+	public void cadastra(Aviao aviao) throws ClassNotFoundException {
+		String sql = "insert into aeroporto(modelo,piloto)values(?,?)";
+		try {
+			Class.forName("org.postgresql.Driver");
+			connection = DriverManager.getConnection(url, user, senha);
+			// prepared statement para inserção
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			// seta os valores
+			stmt.setString(1, aviao.getmodelo());
+			stmt.setString(2, aviao.getpiloto());
+			// executa
+			stmt.execute();
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	public ArrayList<Aviao> busca(Aviao aviao) throws ClassNotFoundException {
+		ArrayList<Aviao> listaAviao = new ArrayList<Aviao>();
+		String sql = "select * from aeroporto where modelo = ?";
+		try {
+			Class.forName("org.postgresql.Driver");
+			connection = DriverManager.getConnection(url, user, senha);
+
+			PreparedStatement stmt = connection.prepareStatement(sql);
+			stmt.setString(1, aviao.getmodelo());
+			ResultSet rs = stmt.executeQuery();
+			// executa
+			while (rs.next()) {
+				Aviao c = new Aviao(rs.getString("modelo"), rs.getString("piloto"));
+				listaAviao.add(c);
+			}
+			stmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return listaAviao;	
+	}
+	
+	public void atualiza(Aviao aviao) throws ClassNotFoundException {
+	    String sql = "UPDATE aeroporto SET piloto = ? WHERE modelo = ?";
+	    try {
+	        Class.forName("org.postgresql.Driver");
+	        connection = DriverManager.getConnection(url, user, senha);
+	        
+	        PreparedStatement stmt = connection.prepareStatement(sql);
+	        
+	        // Seta os valores dos parâmetros
+	        stmt.setString(1, aviao.getpiloto()); // Atualiza o piloto
+	        stmt.setString(2, aviao.getmodelo()); // Filtra pelo modelo
+	        
+	        // Executa a atualização
+	        int linhasAfetadas = stmt.executeUpdate();
+	        
+	        if (linhasAfetadas > 0) {
+	            System.out.println("Avião(s) atualizado(s) com sucesso.");
+	        } else {
+	            System.out.println("Nenhum avião encontrado com o modelo especificado.");
+	        }
+	        
+	        stmt.close();
+	    } catch (SQLException e) {
+	        // Exibindo detalhes do erro
+	        System.err.println("Erro ao atualizar o avião: " + e.getMessage());
+	        e.printStackTrace();
+	        throw new RuntimeException(e);
+	    }
+	}
+
+
+
+}

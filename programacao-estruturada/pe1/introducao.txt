@@ -1,0 +1,37 @@
+//Neste arquivo observa-se alguns conceitos fundamentais que foram utilizados no decorrer da matéria
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=>, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        // comentário de uma linha
+        /* trecho de comentario */
+        console.log("Olá Mundo!!!")
+
+        function soma(v1, v2, v3){
+
+            return v1+v2+v3;
+            
+        }
+        function exibeMsg(id, valor){
+            document.getElementById(id).innerHTML = valor;
+        }
+    </script>
+
+    <p id="paragrafo">Qualquer coisa a mesma coisa!</p>
+    <button onclick="document.getElementById('paragrafo').innerHTML='Olá mundo JavaScript' ">Clique aqui</button>
+
+    <button onclick="exibeMsg('resultado', soma(7, 55, 7))">Clique aqui para chamar a função</button>
+    <p id="resultado"></p>
+    <script scr="index.html"></script>
+    
+
+</body>
+</html>

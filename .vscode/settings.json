@@ -1,6 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "programacao-orientada-a-objetos/poo-2/java+html/lib/javax.servlet-api-4.0.1.jar"
-    ]
-}
